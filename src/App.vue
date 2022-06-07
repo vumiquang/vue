@@ -1,28 +1,25 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div>
+    <Head @addNote="addNote" />
   </div>
 </template>
-
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Head from "./components/HeadNote.vue";
 
 export default {
   name: "App",
+  data() {
+    return { notes: [] };
+  },
   components: {
-    HelloWorld,
+    Head,
+  },
+  methods: {
+    addNote(note) {
+      console.log(note);
+      this.notes.push(note);
+    },
   },
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style scoped></style>
