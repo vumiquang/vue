@@ -3,14 +3,27 @@
     <div class="container">
       <h3>Notes</h3>
       <div class="wrap-input">
-        <input type="text" placeholder="Add note here ..." v-model="text" />
+        <input
+          type="text"
+          placeholder="Add note here ..."
+          v-model="text"
+          ref="input"
+          @keyup.enter="addNote"
+        />
         <font-awesome-icon
           icon="fa-solid fa-file-circle-plus"
           class="icon"
           @click="addNote"
         />
       </div>
-      <list-note />
+      <list-note
+        :notes="notes"
+        @changeNoteStatus="changeNoteStatus"
+        @deleteNote="deleteNote"
+        @clearComplete="clearComplete"
+        @deleteNoteSelected="deleteNoteSelected"
+        @setSelectTedNote="setSelectTedNote"
+      />
     </div>
   </div>
 </template>
@@ -18,8 +31,17 @@
 <script>
 import ListNote from "./ListNote.vue";
 import { v4 } from "uuid";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export default {
+  props: {
+    notes: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+  },
   data() {
     return {
       text: "",
@@ -27,11 +49,33 @@ export default {
   },
   components: {
     ListNote,
+    FontAwesomeIcon,
   },
   methods: {
     addNote() {
       if (this.text.length > 0)
-        this.$emit("addNote", { text: this.text, status: "active", id: v4() });
+        this.$emit("addNote", {
+          text: this.text,
+          status: "active",
+          id: v4(),
+        });
+
+      this.text = "";
+    },
+    changeNoteStatus(id) {
+      this.$emit("changeNoteStatus", id);
+    },
+    deleteNote(id) {
+      this.$emit("deleteNote", id);
+    },
+    clearComplete() {
+      this.$emit("clearComplete");
+    },
+    deleteNoteSelected() {
+      this.$emit("deleteNoteSelected");
+    },
+    setSelectTedNote(listID) {
+      this.$emit("setSelectTedNote", listID);
     },
   },
 };
@@ -50,7 +94,7 @@ export default {
   .container {
     padding-top: 50px;
     margin: 0 auto;
-    width: 300px;
+    width: 500px;
     h3 {
       font-size: 2rem;
       margin-bottom: 20px;

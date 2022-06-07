@@ -12,8 +12,8 @@ Vue.config.productionTip = false;
 
 library.add(faFileCirclePlus, faTrashCan);
 
+Vue.component("font-awesome-icon", FontAwesomeIcon);
+
 new Vue({
   render: (h) => h(App),
 }).$mount("#app");
-
-Vue.component("font-awesome-icon", FontAwesomeIcon);
